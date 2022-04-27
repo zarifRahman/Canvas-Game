@@ -6,6 +6,9 @@ const c = canvas.getContext('2d');
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
+const scoreEl = document.querySelector("#scoreEl");
+console.log(scoreEl);
+
 class Player {
   constructor(x, y, radius, color) {
     this.x = x;
@@ -134,6 +137,7 @@ function spawnEnemies(){
 }
 
 let animationId;
+let score = 0;
 
 function animate(){
   animationId = requestAnimationFrame(animate);
@@ -176,6 +180,10 @@ function animate(){
       // collision detection
       if (dist - enemy.radius - projectile.radius < 1) {
         {
+          // increase score
+          score +=100;
+          scoreEl.innerHTML = score;
+
           // create exposions
           for(let i = 0; i < 8; i++){
             particles.push(
@@ -192,6 +200,9 @@ function animate(){
             );
           }
           if(enemy.radius - 10 > 5){
+            score += 100;
+            scoreEl.innerHTML = score;
+
             gsap.to(enemy, {
               radius: enemy.radius - 10
             })
@@ -199,6 +210,10 @@ function animate(){
               projectiles.splice(projectileIndex, 1);
             }, 0);
           }else{ 
+            // remove from scene
+            score += 100;
+            scoreEl.innerHTML = score;
+            
             setTimeout(() => {
               enemies.splice(index, 1);
               projectiles.splice(projectileIndex, 1);
